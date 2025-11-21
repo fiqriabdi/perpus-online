@@ -6,3 +6,4 @@
 
 ### versi offline
 <img src="img/Perpanjangan_offline.png" width="450">
+
