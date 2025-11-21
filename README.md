@@ -8,14 +8,14 @@
   3. Sistem memperbaharui status
 
 ### Deskripsi Online
-- Mahasiswa melakukan login ke sistem
-- Mahasiswa memilih menu perpanjangan
-- Mahasiswa melakukan input data buku dan submit
-- Sistem menerima notifikasi
-- Petugas mengecek dan melakukan aksi:
-  - Terima (accept)
-  - Tolak (reject)
-- Mahasiswa menerima notifikasi
+  1. Mahasiswa melakukan login ke sistem
+  2. Mahasiswa memilih menu perpanjangan
+  3. Mahasiswa melakukan input data buku dan submit
+  4. Sistem menerima notifikasi
+  5. Petugas mengecek dan melakukan aksi:
+     - Terima (accept)
+     - Tolak (reject)
+  6. Mahasiswa menerima notifikasi
 
 <br>
 
