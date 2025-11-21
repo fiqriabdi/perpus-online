@@ -19,6 +19,8 @@
   - Tolak (reject)
 - Mahasiswa menerima notifikasi
 
+<br>
+
 ### DAD versi online
 <img src="img/Perpanjangan_online.png" width="450">
 
