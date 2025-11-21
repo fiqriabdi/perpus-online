@@ -1,4 +1,4 @@
-## Sistem perpanjangan
+## Fitur perpanjangan
 
 ### Deskripsi Offline
 - Mahasiswa datang dengan membawa buku pinjaman
