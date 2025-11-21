@@ -1,9 +1,11 @@
 ## Fitur Perpanjangan
 
 ### Deskripsi Offline
-- Mahasiswa datang dengan membawa buku pinjaman
-- Mahasiswa melapor ke petugas
-- Petugas melakukan input data ke sistem
+
+  1. Mahasiswa datang dengan membawa buku pinjaman
+  2. Mahasiswa melapor ke petugas
+  2. Petugas melakukan input data ke sistem
+  3. Sistem memperbaharui status
 
 ### Deskripsi Online
 - Mahasiswa melakukan login ke sistem
