@@ -2,12 +2,8 @@
 
 ### Deskripsi Offline
 - Mahasiswa datang dengan membawa buku pinjaman
-- Mahasiswa melapor ke petugas:
-  - Perpanjangan
-  - Pengembalian
-- Petugas melakukan input data ke sistem:
-  - Perpanjangan
-  - Pengembalian
+- Mahasiswa melapor ke petugas
+- Petugas melakukan input data ke sistem
 
 ### Deskripsi Online
 - Mahasiswa melakukan login ke sistem
