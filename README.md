@@ -26,5 +26,5 @@
 <img src="img/Perpanjangan_offline.png" width="450">
 
 
-### License
+---   
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
