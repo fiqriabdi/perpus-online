@@ -18,7 +18,8 @@
   6. Mahasiswa menerima notifikasi
 
 <br>
-### DAD versi offline
+
+### DAD versi offline  
 <img src="img/offline_DAD.png" width="450">
 
 
