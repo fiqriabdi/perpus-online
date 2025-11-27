@@ -18,13 +18,12 @@
   6. Mahasiswa menerima notifikasi
 
 <br>
+### DAD versi offline
+<img src="img/offline_DAD.png" width="450">
+
 
 ### DAD versi online
-<img src="img/Perpanjangan_online.png" width="450">
-
-### DAD versi offline
-<img src="img/Perpanjangan_offline.png" width="450">
-
+<img src="img/Perpanjangan_online.png" width="450" alt ="Dalama proses...">
 
 ---   
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
