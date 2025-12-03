@@ -5,7 +5,9 @@
   1. Mahasiswa datang dengan membawa buku pinjaman
   2. Mahasiswa melapor ke petugas
   2. Petugas melakukan input data ke sistem
-  3. Sistem memperbaharui status
+  3. Sistem mengecek:
+     - Update status
+     - Tambah data baru
 
 ### Deskripsi Online
   1. Mahasiswa melakukan login ke sistem
