@@ -6,8 +6,8 @@
   2. Mahasiswa melapor ke petugas
   2. Petugas melakukan input data ke sistem
   3. Sistem mengecek:
-     - Update status
-     - Tambah data baru
+     - Jika data ada, update status
+     - Jika data belum ada, tambah data baru
 
 ### Deskripsi Online
   1. Mahasiswa melakukan login ke sistem
