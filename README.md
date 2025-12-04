@@ -22,7 +22,7 @@
 <br>
 
 ### DAD versi offline  
-<img src="img/offline_DAD.png" width="450">
+<img src="img/dad_refisi.png" width="450">
 
 
 ### DAD versi online
