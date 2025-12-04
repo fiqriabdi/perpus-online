@@ -105,3 +105,28 @@ MariaDB [perpus]> describe perpanjangan;
 
 MariaDB [perpus]>
 </pre>
+
+DELIMITER:
+```sql
+-- Trigger cerdas: +1 hari otomatis + hitung denda 500/hari
+DELIMITER $$
+CREATE TRIGGER trg_perpanjangan_accepted 
+BEFORE UPDATE ON perpanjangan
+FOR EACH ROW
+BEGIN
+    -- Saat status jadi 'accepted' → set tanggal_kembali = tanggal_perpanjang + 1 hari
+    IF NEW.status = 'accepted' AND OLD.status != 'accepted' THEN
+        SET NEW.tanggal_kembali = DATE_ADD(NEW.tanggal_perpanjang, INTERVAL 1 DAY);
+    END IF;
+
+    -- Saat buku dikembalikan → hitung denda otomatis
+    IF NEW.tanggal_dikembalikan IS NOT NULL AND (OLD.tanggal_dikembalikan IS NULL OR OLD.tanggal_dikembalikan != NEW.tanggal_dikembalikan) THEN
+        IF NEW.tanggal_dikembalikan > NEW.tanggal_kembali THEN
+            SET NEW.denda = DATEDIFF(NEW.tanggal_dikembalikan, NEW.tanggal_kembali) * 500;
+        ELSE
+            SET NEW.denda = 0;
+        END IF;
+    END IF;
+END$$ 
+DELIMITER ;
+```
