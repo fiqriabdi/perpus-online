@@ -106,7 +106,8 @@ MariaDB [perpus]> describe perpanjangan;
 MariaDB [perpus]>
 </pre>
 
-DELIMITER:
+  
+**DELIMITER**
 ```sql
 -- Trigger cerdas: +1 hari otomatis + hitung denda 500/hari
 DELIMITER $$
