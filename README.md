@@ -27,12 +27,9 @@
 
 <br>
 
-### DAD versi offline  
+### DAD  
 <img src="img/dad_refisi.png" width="450">
 
-
-### DAD versi online
-<img src="img/Perpanjangan_online.png" width="450" alt ="Dalama proses...">
 
 ---   
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
