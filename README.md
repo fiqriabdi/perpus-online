@@ -27,6 +27,44 @@
 
 <br>
 
+```mermaid
+graph TD
+    Mahasiswa["Mahasiswa"]
+    Petugas["Petugas"]
+    UC1["Login"]
+    UC2["Ajukan Perpanjangan"]
+    UC3["Terima Notifikasi"]
+    UC4["Update Profil"]
+    UC5["Registrasi Mahasiswa"]
+    UC6["Input Perpanjangan Offline"]
+    UC7["Validasi Perpanjangan"]
+    UC8["Input Tanggal Pengembalian"]
+    UC9["Hitung Denda"]
+    UC10["Kirim Notifikasi"]
+    
+    %% Hubungan Mahasiswa
+    Mahasiswa --> UC1
+    Mahasiswa --> UC2
+    Mahasiswa --> UC3
+    Mahasiswa --> UC4
+    
+    %% Hubungan Petugas
+    Petugas --> UC1
+    Petugas --> UC5
+    Petugas --> UC6
+    Petugas --> UC7
+    Petugas --> UC8
+    Petugas --> UC9
+    Petugas --> UC10
+    
+    %% Relasi antar use case
+    UC7 --> UC10
+    UC8 --> UC9
+    UC2 --> UC7
+```
+
+</br>
+
 ### DAD  
 <img src="img/dad_refisi.png" width="450">
 
