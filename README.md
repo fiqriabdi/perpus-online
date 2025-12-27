@@ -27,6 +27,57 @@
 
 <br>
 
+### ERD
+
+```mermaid
+erDiagram
+
+    USERS {
+        int id PK
+        string username
+        string password_hash
+        string role
+        boolean is_active
+        datetime created_at
+    }
+
+    MAHASISWA {
+        int id PK
+        int user_id FK
+        string nim
+        string nama
+        string email
+        string whatsapp
+        datetime created_at
+    }
+
+    PETUGAS {
+        int id PK
+        int user_id FK
+        string nama
+        string email
+        datetime created_at
+    }
+
+    PERPANJANGAN {
+        int id PK
+        int mahasiswa_id FK
+        string kode_buku
+        string judul_buku
+        date tanggal_perpanjangan
+        date tanggal_kembali
+        date tanggal_dikembalikan
+        string status
+        int denda
+        datetime created_at
+    }
+
+    USERS ||--o| MAHASISWA : memiliki
+    USERS ||--|| PETUGAS : memiliki
+    MAHASISWA ||--o{ PERPANJANGAN : mengajukan
+
+```
+
 ```mermaid
 graph TD
     Mahasiswa["Mahasiswa"]
