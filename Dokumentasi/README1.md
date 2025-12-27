@@ -145,3 +145,29 @@ flowchart TD
     D --> F[Status = Offline_Extended]
     E --> F
 ```
+
+## Pseudo
+
+```pseudo
+input login_identifier, password
+
+user = SELECT * FROM users WHERE login_identifier = input
+
+IF user NOT FOUND
+    RETURN "Login gagal"
+ENDIF
+
+IF verify(password, user.password_hash) == FALSE
+    RETURN "Password salah"
+ENDIF
+
+IF user.is_active == FALSE
+    RETURN "Akun nonaktif"
+ENDIF
+
+IF user.role == "mahasiswa"
+    redirect dashboard_mahasiswa
+ELSE
+    redirect dashboard_petugas
+ENDIF
+```
