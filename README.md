@@ -25,6 +25,7 @@
      - Terima (accept)
      - Tolak (reject)
   6. Mahasiswa menerima notifikasi
+     - Update status (Diterima / Ditolak)
 
 </br>
 
