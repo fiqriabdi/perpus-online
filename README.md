@@ -19,6 +19,7 @@
   1. Mahasiswa melakukan login ke sistem
   2. Mahasiswa memilih menu perpanjangan
   3. Mahasiswa melakukan input data buku dan submit
+     - Status `pending`  
   4. Sistem menerima notifikasi
   5. Petugas mengecek dan melakukan aksi:
      - Terima (accept)
