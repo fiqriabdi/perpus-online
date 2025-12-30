@@ -1,133 +1,169 @@
-## Dokumentasi Project
+# Narasi Dokumentasi Project
 
-### Struktur Direktori  
-<pre>
-perpus-utdi-final/                 ← nama folder bebas, misal: perpus, perpus-utdi, dll
-├── config/
-│   └── database.php
-├── fungsi/
-│   ├── helper.php
-│   ├── auth.php
-│   ├── buku.php
-│   ├── mahasiswa.php
-│   ├── perpanjangan.php
-│   └── wa.php                      ← kirim WA otomatis
-├── proses/
-│   ├── login.php
-│   ├── registrasi-mandiri.php
-│   ├── ajukan-perpanjangan.php
-│   ├── petugas-accept-reject.php
-│   ├── petugas-buat-akun.php
-│   ├── kembalikan-buku.php
-│   └── update-profil.php
-├── view/
-│   ├── mahasiswa/
-│   │   ├── login.php
-│   │   ├── register.php
-│   │   ├── dashboard.php
-│   │   ├── ajukan.php             ← ada tombol scan QR
-│   │   ├── riwayat.php
-│   │   └── profil.php
-│   └── petugas/                   ← tanpa login (hanya dipakai di komputer perpus)
-│       ├── index.php
-│       ├── buat-akun.php
-│       ├── daftar-ajuan.php       ← semua status pending
-│       ├── riwayat.php
-│       └── statistik.php
-├── assets/
-│   ├── css/style-utdi.css         ← Navi + Gold full custom
-│   ├── img/logo-utdi.png
-│   └── js/qr-scanner.min.js       ← untuk scan QR kode buku
-├── libraries/
-│   └── html5-qrcode.min.js        ← scanner QR ringan
-├── struk/
-│   └── generate-pdf.php           ← struk digital otomatis
-└── index.php                      ← auto redirect: petugas kalau dari IP lokal, mahasiswa kalau dari luar
-</pre>
+## **Aplikasi Web Perpanjangan Peminjaman Buku**
 
-### Informasi table
-<pre>
-  MariaDB [perpus]> show tables;
-+------------------+
-| Tables_in_perpus |
-+------------------+
-| buku             |
-| mahasiswa        |
-| perpanjangan     |
-+------------------+
-3 rows in set (0.001 sec)
+Aplikasi Web Perpanjangan Peminjaman Buku dirancang khusus untuk **mengelola proses perpanjangan peminjaman buku**, baik secara **offline** maupun **online**, dengan **validasi manual oleh petugas**.
+Aplikasi ini **tidak terhubung langsung** dengan server perpustakaan kampus dan berdiri sebagai sistem mandiri.
 
-MariaDB [perpus]> describe buku;
-+-------+--------------+------+-----+---------+----------------+
-| Field | Type         | Null | Key | Default | Extra          |
-+-------+--------------+------+-----+---------+----------------+
-| id    | int(11)      | NO   | PRI | NULL    | auto_increment |
-| kode  | char(5)      | NO   | UNI | NULL    |                |
-| judul | varchar(100) | NO   |     | NULL    |                |
-+-------+--------------+------+-----+---------+----------------+
-3 rows in set (0.020 sec)
+> *Aplikasi web ini dapat dikatakan sebagai wadah kosong yang menampung data baru, di mana data akan diperbarui jika sudah ada, atau ditambahkan jika belum ada, dengan validasi manual oleh petugas.*
 
-MariaDB [perpus]> describe mahasiswa;
-+-------------------+--------------------------+------+-----+---------+----------------+
-| Field             | Type                     | Null | Key | Default | Extra          |
-+-------------------+--------------------------+------+-----+---------+----------------+
-| id                | int(11)                  | NO   | PRI | NULL    | auto_increment |
-| nim               | char(10)                 | NO   | UNI | NULL    |                |
-| nama              | varchar(255)             | NO   |     | NULL    |                |
-| prodi             | varchar(50)              | NO   |     | NULL    |                |
-| password          | varchar(255)             | YES  |     | NULL    |                |
-| wa                | varchar(20)              | YES  |     | NULL    |                |
-| email             | varchar(100)             | YES  |     | NULL    |                |
-| status            | enum('aktif','nonaktif') | YES  |     | aktif   |                |
-| registered_by     | enum('self','petugas')   | YES  |     | NULL    |                |
-| email_verified_at | datetime                 | YES  |     | NULL    |                |
-| wa_verified_at    | datetime                 | YES  |     | NULL    |                |
-+-------------------+--------------------------+------+-----+---------+----------------+
-11 rows in set (0.017 sec)
+---
 
-MariaDB [perpus]> describe perpanjangan;
-+----------------------+---------------------------------------+------+-----+---------------------+----------------+
-| Field                | Type                                  | Null | Key | Default             | Extra          |
-+----------------------+---------------------------------------+------+-----+---------------------+----------------+
-| id                   | int(11)                               | NO   | PRI | NULL                | auto_increment |
-| mahasiswa_id         | int(11)                               | NO   | MUL | NULL                |                |
-| buku_id              | int(11)                               | NO   | MUL | NULL                |                |
-| tanggal_perpanjang   | date                                  | NO   | MUL | curdate()           |                |
-| tanggal_kembali      | date                                  | NO   |     | NULL                |                |
-| tanggal_dikembalikan | date                                  | YES  |     | NULL                |                |
-| denda                | int(11)                               | YES  |     | 0                   |                |
-| cara                 | enum('offline','online')              | YES  |     | offline             |                |
-| status               | enum('pending','accepted','rejected') | YES  |     | pending             |                |
-| keterangan           | varchar(150)                          | YES  |     | NULL                |                |
-| created_at           | datetime                              | YES  |     | current_timestamp() |                |
-+----------------------+---------------------------------------+------+-----+---------------------+----------------+
-11 rows in set (0.017 sec)
+## **Perpanjangan Peminjaman Offline**
 
-MariaDB [perpus]>
-</pre>
+**Catatan:**
+Perpanjangan offline **tidak mewajibkan mahasiswa memiliki akun**.
 
-  
-**DELIMITER**
-```sql
--- Trigger cerdas: +1 hari otomatis + hitung denda 500/hari
-DELIMITER $$
-CREATE TRIGGER trg_perpanjangan_accepted 
-BEFORE UPDATE ON perpanjangan
-FOR EACH ROW
-BEGIN
-    -- Saat status jadi 'accepted' → set tanggal_kembali = tanggal_perpanjang + 1 hari
-    IF NEW.status = 'accepted' AND OLD.status != 'accepted' THEN
-        SET NEW.tanggal_kembali = DATE_ADD(NEW.tanggal_perpanjang, INTERVAL 1 DAY);
-    END IF;
+### Alur:
 
-    -- Saat buku dikembalikan → hitung denda otomatis
-    IF NEW.tanggal_dikembalikan IS NOT NULL AND (OLD.tanggal_dikembalikan IS NULL OR OLD.tanggal_dikembalikan != NEW.tanggal_dikembalikan) THEN
-        IF NEW.tanggal_dikembalikan > NEW.tanggal_kembali THEN
-            SET NEW.denda = DATEDIFF(NEW.tanggal_dikembalikan, NEW.tanggal_kembali) * 500;
-        ELSE
-            SET NEW.denda = 0;
-        END IF;
-    END IF;
-END$$ 
-DELIMITER ;
+1. Mahasiswa datang membawa buku pinjaman.
+2. Mahasiswa melapor kepada petugas.
+3. Petugas melakukan input data ke sistem, meliputi:
+
+   * NIM
+   * Nama
+   * Jurusan
+   * Kode Buku
+
+**Catatan penting:**
+Pada perpanjangan offline, **hanya kode buku yang diinput**.
+Hal ini dilakukan untuk menghindari ketidaksesuaian data (judul, penulis, dan metadata lain) dengan database perpustakaan kampus, mengingat aplikasi ini **tidak terintegrasi** dengan sistem perpustakaan kampus.
+
+4. Sistem melakukan pengecekan:
+
+   * Jika data sudah ada → data diperbarui
+   * Jika data belum ada → data ditambahkan
+
+---
+
+## **Registrasi Akun Pengguna**
+
+**Catatan:**
+Perpanjangan peminjaman secara online **mewajibkan mahasiswa memiliki akun**.
+
+Jika mahasiswa belum memiliki akun:
+
+1. Mahasiswa melapor kepada petugas.
+2. Registrasi akun dilakukan oleh petugas dengan menginput:
+
+   * NIM (sebagai username)
+   * Nama
+   * Jurusan
+3. Password:
+
+   * Tidak diinput manual oleh petugas
+   * Digenerate otomatis oleh sistem
+   * Karakter:
+
+     ```
+     0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ?!
+     ```
+   * Panjang: **9 karakter**
+4. Sistem mencetak bukti registrasi yang berisi:
+
+   * Tanggal registrasi
+   * Username
+   * Password
+   * Link login aplikasi
+
+---
+
+## **Perpanjangan Peminjaman Online**
+
+**Catatan:**
+Perpanjangan online hanya dapat dilakukan oleh mahasiswa yang telah memiliki akun.
+
+### Alur:
+
+1. Mahasiswa melakukan login ke sistem.
+2. Mahasiswa memilih menu perpanjangan peminjaman.
+3. Mahasiswa menginput data buku dan mengirim permohonan.
+4. Sistem mengirim notifikasi ke petugas.
+5. Petugas melakukan validasi manual dengan keputusan:
+
+   * **Accept (diterima)**
+   * **Reject (ditolak)**
+6. Mahasiswa menerima notifikasi hasil keputusan.
+
+---
+
+## **Pengembalian Setelah Perpanjangan & Denda**
+
+Aplikasi ini juga mencatat **pengembalian buku setelah perpanjangan**, bukan pengembalian peminjaman awal.
+
+### Pencatatan Waktu:
+
+* `tanggal_perpanjangan`
+  → tanggal buku diperpanjang (ditetapkan otomatis oleh sistem)
+* `tanggal_kembali`
+  → tanggal seharusnya buku dikembalikan
+  (default: `tanggal_perpanjangan + 1 hari`)
+* `tanggal_dikembalikan`
+  → tanggal aktual mahasiswa mengembalikan buku
+
+### Perhitungan Denda:
+
+Jika:
+
 ```
+tanggal_dikembalikan > tanggal_kembali
+```
+
+maka:
+
+```
+denda = 500 rupiah
+```
+
+**Catatan:**
+Pengaturan waktu dapat dilakukan secara otomatis, semi otomatis, atau manual.
+Namun, **best practice yang digunakan adalah otomatis**, untuk meminimalkan human error.
+
+---
+
+## **Fokus Sistem**
+
+Aplikasi ini berfokus pada:
+
+* Perpanjangan peminjaman buku
+* Pengembalian setelah perpanjangan
+* Denda keterlambatan pengembalian setelah perpanjangan
+
+---
+
+## **Yang Tidak Ditangani Sistem**
+
+Aplikasi **tidak menangani**:
+
+* Peminjaman buku
+* Pengembalian peminjaman awal
+* Denda pengembalian peminjaman awal
+* Validasi otomatis yang melibatkan server perpustakaan kampus
+
+---
+
+## **Ruang Lingkup Aplikasi**
+
+Aplikasi web ini hanya mengelola:
+
+* Perpanjangan peminjaman buku
+* Pengembalian setelah perpanjangan
+* Denda keterlambatan pengembalian setelah perpanjangan
+
+Seluruh proses validasi dilakukan **secara manual oleh petugas**, berdasarkan permohonan dari mahasiswa.
+
+Aplikasi ini bersifat **konsisten dalam ruang lingkup**, tidak mencampuradukkan fungsi, dan berjalan sesuai lintasan yang telah ditentukan.
+
+---
+
+## **Penegasan Akhir**
+
+Sekali lagi, aplikasi web ini merupakan **wadah kosong** yang berfungsi untuk:
+
+* Menampung data perpanjangan
+* Memperbarui data jika sudah ada
+* Menambahkan data jika belum ada
+
+Seluruh proses dilakukan dengan **validasi manual oleh petugas**, tanpa keterlibatan langsung sistem perpustakaan kampus.
+
+---
