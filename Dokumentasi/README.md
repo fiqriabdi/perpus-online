@@ -1,6 +1,4 @@
-# Narasi Dokumentasi Project
-
-## **Aplikasi Web Perpanjangan Peminjaman Buku**
+# **Aplikasi Web Perpanjangan Peminjaman Buku**
 
 Aplikasi Web Perpanjangan Peminjaman Buku dirancang khusus untuk **mengelola proses perpanjangan peminjaman buku**, baik secara **offline** maupun **online**, dengan **validasi manual oleh petugas**.
 Aplikasi ini **tidak terhubung langsung** dengan server perpustakaan kampus dan berdiri sebagai sistem mandiri.
